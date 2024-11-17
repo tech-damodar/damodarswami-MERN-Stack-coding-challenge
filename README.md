@@ -4,19 +4,19 @@ This project is a MERN (MongoDB, Express, React, Node.js) stack application, wit
 
 ---
 
-<h2>Project Setup and Execution</h2>
-<br>
-<h2>Frontend Setup (React with Vite)</h2>
-<br>
+## Project Setup and Execution
+
+### **Frontend Setup (React with Vite)**
+
 1. Navigate to the `frontend` directory:
-   <br>
+   ```bash
    cd frontend
-  <br>
+   ```
 
 2. Install the required dependencies:
-  
+   ```bash
    npm install
-  
+   ```
 
 3. Start the development server:
    ```bash
@@ -50,20 +50,7 @@ This project is a MERN (MongoDB, Express, React, Node.js) stack application, wit
 
 To ensure the database is correctly configured:
 
-1. Export your database as a `.sql` file:
-   - In MySQL Workbench, run the following command to export the database:
-     ```bash
-     mysqldump -u <username> -p <database_name> > project_database.sql
-     ```
-   - Share the `project_database.sql` file in your GitHub repository under a folder named `database`.
 
-2. For the user to set up the database:
-   - Import the `.sql` file into their local MySQL server:
-     ```bash
-     mysql -u <username> -p <database_name> < project_database.sql
-     ```
-
----
 
 ## Notes
 
@@ -74,7 +61,3 @@ To ensure the database is correctly configured:
 - Use Postman or any API testing tool to test the backend endpoints.
 
 If you encounter issues, feel free to contact me for support!
-
----
-
-Let me know if you'd like me to refine or add more details to the instructions!
