@@ -1,0 +1,76 @@
+package com.example.demo.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
+
+import com.example.demo.Entity.ProductTransaction;
+import com.example.demo.dao.ProductTransactionRepository;
+import com.example.demo.services.ProductTransactionService;
+
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@RestController
+@RequestMapping("/api/products")
+public class ProductTransactionController {
+
+    @Autowired
+    private ProductTransactionService service;
+
+    @Autowired
+    private ProductTransactionRepository repository;
+
+    // Initialize database with data from the API
+  //  @PostMapping("/initialize")//https://localhost:8080/api/products/initialize
+    
+
+    // Fetch transactions based on month with search and pagination
+    @GetMapping
+    public Page<ProductTransaction> getTransactions(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false, defaultValue = "1") int page,
+            @RequestParam(required = false, defaultValue = "10") int perPage,
+            @RequestParam String month) {
+
+        // Fetch all transactions
+        List<ProductTransaction> allTransactions = repository.findAll();
+
+        // Filter by month
+        SimpleDateFormat monthFormatter = new SimpleDateFormat("MMMM");
+        List<ProductTransaction> filteredByMonth = allTransactions.stream()
+                .filter(transaction -> {
+                    String transactionMonth = monthFormatter.format(transaction.getDateOfSale());
+                    return transactionMonth.equalsIgnoreCase(month.trim());
+                })
+                .collect(Collectors.toList());
+
+        // Filter by search query if provided
+        if (search != null && !search.isEmpty()) {
+            filteredByMonth = filteredByMonth.stream()
+                    .filter(transaction -> transaction.getTitle().toLowerCase().contains(search.toLowerCase())
+                            || transaction.getDescription().toLowerCase().contains(search.toLowerCase())
+                            || transaction.getPrice().toString().contains(search))
+                    .collect(Collectors.toList());
+        }
+
+        // Handle empty results gracefully
+        if (filteredByMonth.isEmpty()) {
+            return new PageImpl<>(Collections.emptyList(), PageRequest.of(page - 1, perPage), 0);
+        }
+
+        // Pagination logic
+        int start = (page - 1) * perPage;
+        int end = Math.min(start + perPage, filteredByMonth.size());
+        List<ProductTransaction> paginatedList = filteredByMonth.subList(start, end);
+
+        // Create and return a Page object
+        Pageable pageable = PageRequest.of(page - 1, perPage);
+        return new PageImpl<>(paginatedList, pageable, filteredByMonth.size());
+    }
+
+}

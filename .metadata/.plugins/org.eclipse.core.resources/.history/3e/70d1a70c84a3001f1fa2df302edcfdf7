@@ -1,0 +1,122 @@
+package com.example.demo.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
+
+import com.example.demo.Entity.BarChartDTO;
+import com.example.demo.Entity.CombinedResponseDTO;
+import com.example.demo.Entity.PieChartDTO;
+import com.example.demo.Entity.ProductTransaction;
+import com.example.demo.Entity.StatisticsDTO;
+import com.example.demo.dao.ProductTransactionRepository;
+import com.example.demo.services.ProductTransactionService;
+
+import java.text.SimpleDateFormat;
+import java.time.Month;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+@RestController
+@RequestMapping("/api/products")
+public class ProductTransactionController {
+
+    @Autowired
+    private ProductTransactionService service;
+
+    @Autowired
+    private ProductTransactionRepository repository;
+
+    // get statistics based on month
+  //http://localhost:8080/api/products/statistics?month=January
+    @GetMapping("/statistics") 
+    public StatisticsDTO getStatistics(@RequestParam String month) {
+        return service.getStatistics(month);
+    }
+    
+    //get barchart data
+    //http://localhost:8080/api/products/barchart?month=January
+    @GetMapping("/barchart")
+    public List<BarChartDTO> getBarChart(@RequestParam String month) {
+        return service.getBarChart(month);
+    }
+    
+    
+  //get barchart data
+    //http://localhost:8080/api/products/piechart?month=January
+    @GetMapping("/piechart")
+    public List<PieChartDTO> getPieChart(@RequestParam String month) {
+        List<ProductTransaction> allTransactions = repository.findAll();
+        SimpleDateFormat monthFormatter = new SimpleDateFormat("MMMM");
+
+        // Filter by month
+        List<ProductTransaction> filteredByMonth = allTransactions.stream()
+                .filter(transaction -> transaction.getDateOfSale() != null &&
+                        monthFormatter.format(transaction.getDateOfSale()).equalsIgnoreCase(month.trim()))
+                .collect(Collectors.toList());
+
+        // Group by category and count items
+        Map<String, Long> categoryCounts = filteredByMonth.stream()
+                .collect(Collectors.groupingBy(ProductTransaction::getCategory, Collectors.counting()));
+
+        // Map to PieChartDTO list
+        List<PieChartDTO> pieChartData = categoryCounts.entrySet().stream()
+                .map(entry -> new PieChartDTO(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
+
+        return pieChartData;
+    }
+
+
+    
+//     Fetch transactions based on month with search and pagination
+//    http://localhost:8080/api/products/all?month=March&page=1&perPage=10
+//    http://localhost:8080/api/products/all?month=March&page=1&perPage=10&search=example
+    @GetMapping("/all")
+    public Page<ProductTransaction> getTransactions(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false, defaultValue = "1") int page,
+            @RequestParam(required = false, defaultValue = "10") int perPage,
+            @RequestParam String month) {
+
+        // Convert month name to month number
+        int monthNumber = Month.valueOf(month.toUpperCase()).getValue();
+
+        // Handle search parameter
+        search = (search != null && !search.isEmpty()) ? "%" + search.toLowerCase() + "%" : null;
+
+        // Set up pagination
+        Pageable pageable = PageRequest.of(page - 1, perPage);
+
+        // Call repository method
+        return repository.findBySearchAndMonth(search, monthNumber, pageable);
+    }
+
+
+    
+    
+    //combine responce of pichart barchar statistics
+//    http://localhost:8080/api/products/piechart?month=January
+    @GetMapping("/combined")
+    public CombinedResponseDTO getCombinedData(@RequestParam String month) {
+        // Fetch data from bar chart API
+        List<BarChartDTO> barChartData = getBarChart(month);
+
+        // Fetch data from pie chart API
+        List<PieChartDTO> pieChartData = getPieChart(month);
+
+        // Fetch data from statistics API
+        StatisticsDTO statisticsData = getStatistics(month);
+
+        // Combine all responses
+        CombinedResponseDTO combinedResponse = new CombinedResponseDTO(barChartData, pieChartData, statisticsData);
+
+        return combinedResponse;
+    }
+    
+}

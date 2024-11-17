@@ -1,0 +1,298 @@
+*{
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+body{
+    font-family: Helvetica;
+    -webkit-font-smoothing: antialiased;
+    background: rgba( 71, 147, 227, 1);
+}
+h2{
+    text-align: center;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: white;
+    padding: 30px 0;
+}
+
+/* Table Styles */
+
+.table-wrapper{
+    margin: 10px 70px;
+    border-radius: 10px;
+    box-shadow: 0px 35px 50px rgba( 0, 0, 0, 0.2 );
+}
+
+.fl-table {
+
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: normal;
+    border: none;
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 100%;
+    white-space: nowrap;
+    background-color: white;
+}
+.throw{
+  border-radius: 10px;
+}
+.fl-table td, .fl-table th {
+    text-align: center;
+    padding: 8px;
+}
+
+.fl-table td {
+    border-right: 1px solid #f8f8f8;
+    font-size: 12px;
+}
+
+.fl-table thead th {
+    color: #ffffff;
+    background: #4FC3A1;
+}
+
+
+.fl-table thead th:nth-child(odd) {
+    color: #ffffff;
+    background: #324960;
+}
+
+.fl-table tr:nth-child(even) {
+    background: #F8F8F8;
+}
+
+/* Responsive */
+
+@media (max-width: 767px) {
+    .fl-table {
+        display: block;
+        width: 100%;
+    }
+    .table-wrapper:before{
+        content: "Scroll horizontally >";
+        display: block;
+        text-align: right;
+        font-size: 11px;
+        color: white;
+        padding: 0 0 10px;
+    }
+    .fl-table thead, .fl-table tbody, .fl-table thead th {
+        display: block;
+    }
+    .fl-table thead th:last-child{
+        border-bottom: none;
+    }
+    .fl-table thead {
+        float: left;
+    }
+    .fl-table tbody {
+        width: auto;
+        position: relative;
+        overflow-x: auto;
+    }
+    
+    .fl-table td, .fl-table th {
+        padding: 20px .625em .625em .625em;
+        height: 60px;
+        vertical-align: middle;
+        box-sizing: border-box;
+        overflow: hidden;
+        overflow-y: auto;
+        width: 120px;
+        font-size: 13px;
+        text-overflow: ellipsis;
+    }
+    .fl-table thead th {
+        text-align: left;
+        border-bottom: 1px solid #f7f7f9;
+    }
+    .fl-table tbody tr {
+        display: table-cell;
+    }
+    .fl-table tbody tr:nth-child(odd) {
+        background: none;
+    }
+    .fl-table tr:nth-child(even) {
+        background: transparent;
+    }
+    .fl-table tr td:nth-child(odd) {
+        background: #F8F8F8;
+        border-right: 1px solid #E6E4E4;
+    }
+    .fl-table tr td:nth-child(even) {
+        border-right: 1px solid #E6E4E4;
+    }
+    .fl-table tbody td {
+        display: block;
+        text-align: center;
+    }
+}
+.search{
+  display: flex;
+  justify-content: space-around;
+  margin: 10px 0px;
+}
+.search input{
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  background-color: #324960;
+  color: #ffffff;
+  text-align: center;
+  
+}
+.search select{
+  border: none;
+  border-radius: 20px;
+  padding: 10px 30px;
+  background-color: #324960;
+  color: #ffffff;
+  text-align: center;
+  
+}
+.fl-table td {
+    border-right: 1px solid #f8f8f8;
+    font-size: 12px;
+    max-width: 308px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.searchBox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.searchicon{
+    font-size: 25px;
+}
+.card-s{
+    width:auto;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 40px;
+    border-radius: 25px;
+    /* margin: auto; */
+   
+    box-shadow: 2px 2px 2px  black;
+    background-color: rgb(227, 184, 73);
+}
+.card-s p{
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    
+}
+.statistic{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+.statistic .search{
+    height: 40px;
+}
+.st-text{
+    text-align: center;
+    margin: 40px 10px;
+}
+.sta-main{
+    background-color: rgb(224, 241, 247);
+    width: 60%;
+    padding: 40px 50px;
+    margin: 30px auto;
+    border-radius: 20px;
+}
+.navbarlist{
+    font-weight: bold;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+.navbarlist ul li{
+    margin: 0px 20px;
+}
+/* Container Styling */
+.containerbar {
+     background-color: rgb(224, 241, 247);;
+    
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 800px;
+    margin: 20px auto;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    position: relative; /* For positioning the dropdown */
+  }
+  
+  /* Month Selector Styling */
+  .month-selector {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+  
+  .month-selector select {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: white; /* Dropdown background */
+    color: #333; /* Text color */
+    cursor: pointer;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Chart Title and Description */
+  .chart-title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .chart-description {
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 20px;
+    color: #f0f0f0;
+  }
+  
+  /* Chart Area */
+  .bar-chart {
+    background-color: white; /* White chart background */
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 20px;
+  }
+  .tile{
+    font-weight: bold;
+  }
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+  }
+  
+  .pagination button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    margin: 0 5px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .pagination button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  
+  .pagination span {
+    margin: 0 10px;
+    font-size: 16px;
+  }
+  

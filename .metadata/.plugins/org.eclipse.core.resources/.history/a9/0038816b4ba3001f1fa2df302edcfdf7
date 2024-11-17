@@ -1,0 +1,38 @@
+package com.example.demo;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+
+import com.example.service.*;
+import com.example.service.ProductTransactionService;
+
+@SpringBootApplication
+@ComponentScan(basePackages = "com.example.service")
+public class BackenApiApplication implements CommandLineRunner {
+	 @Autowired
+	 private ProductTransactionService service;
+	 
+	public static void main(String[] args) {
+		SpringApplication.run(BackenApiApplication.class, args);
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		initializeDatabase();
+		
+	}
+	public void initializeDatabase() {
+        try {
+            service.initializeDatabase();
+//            return "Database initialized successfully!";
+            System.out.println("Database initialized successfully!");
+        } catch (Exception e) {
+//            return "Failed to initialize database: " + e.getMessage();
+        	System.out.println("Failed to initialize database: " + e.getMessage());
+        }
+    }
+
+}
