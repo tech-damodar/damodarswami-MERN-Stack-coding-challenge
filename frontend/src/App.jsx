@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect,useState } from 'react'
 import Navbar from './Navbar'
 import './App.css'
 import Home from './Home'
@@ -8,7 +8,9 @@ import PiecahrtCom from './PiecahrtCom'
 import { BrowserRouter,Routes,Route } from 'react-router-dom'
 function App() {
   const [count, setCount] = useState(0)
-
+  useEffect(()=>{
+  let init = fetch("http://localhost:3000/api/initialize'");
+},[])
   return (
     <>
 
