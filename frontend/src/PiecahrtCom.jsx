@@ -7,12 +7,12 @@ const PiecahrtCom = () => {
     "january", "february", "march", "april", "may", "june",
     "july", "august", "september", "october", "november", "december"
 ];
-let [month, setMonth] = useState("january");
+let [month, setMonth] = useState(1);
 const [barData, setBarData] = useState([]);
 
 
 function fetchBarData(selectedmonth) {
-    const apiUrl = `http://localhost:8080/api/products/piechart?month=${selectedmonth}`;
+    const apiUrl = `http://localhost:3000/api/pie-chart?month=${selectedmonth}`;
     fetch(apiUrl)
         .then((res) => res.json())
         .then((data) => {
@@ -33,8 +33,8 @@ useEffect(() => {
 
 const handleMonthChange = (event) => {
     const selectedValue = event.target.value.toLowerCase();
-    setMonth(selectedValue);
-
+    const monthNumber = monthNames.indexOf(selectedValue) + 1; // Convert to month number (1-12)
+    setMonth(monthNumber);
 
 };
 

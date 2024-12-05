@@ -5,16 +5,17 @@ const Statistics = () => {
         "january", "february", "march", "april", "may", "june", 
         "july", "august", "september", "october", "november", "december"
     ];
-    let[month,setMonth] = useState("january");
+    let[month,setMonth] = useState(1);
     const [statisticData, setstatisticsData] = useState([]);
     
 
     function fetchBarData(selectedmonth){
-        const apiUrl = `http://localhost:8080/api/products/statistics?month=${selectedmonth}`;
+        const apiUrl = `http://localhost:3000/api/statistics?month=${selectedmonth}`;
         fetch(apiUrl)
             .then((res) => res.json())
             .then((data) => {
                 setstatisticsData(data);
+                console.log(data);
             })
             .catch((e) => {
                 console.error("Error fetching bar chart data:", e);
@@ -30,7 +31,8 @@ const Statistics = () => {
 
     const handleMonthChange = (event) => {
         const selectedValue = event.target.value.toLowerCase();
-        setMonth(selectedValue);
+        const monthNumber = monthNames.indexOf(selectedValue) + 1; // Convert to month number (1-12)
+        setMonth(monthNumber); 
         
         
     };
@@ -41,7 +43,7 @@ const Statistics = () => {
         <div className='statistic'>
              
             <div className='card-s'>
-                <p>Total Sale<span>{statisticData.totalSales}</span></p>
+                <p>Total Sale<span>{statisticData.totalSaleAmount}</span></p>
                 <p>Toatal sold item <span>{statisticData.totalSoldItems}</span></p>
                 <p>Total not sold item<span>{statisticData.totalNotSoldItems}</span></p>
             </div>
